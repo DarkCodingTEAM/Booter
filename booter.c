@@ -48,18 +48,16 @@ int main() {
 
         int x;
 
-        for (x = 0; x < 50000; x++) {
-            if (status == IMPOSSIBLE_CONNECTION) {
-                send(epicsocket, packets, sizeof(packets), 0);
-                printf(COLOR_GREEN);
-                printf("Packet sent!\n");
-            } else {
-                printf(COLOR_RED);
-                printf("Host is down.\n");
-                break;
-            }
+	    while (status != IMPOSSIBLE_CONNECTION) {
+            send(epicsocket, packets, sizeof(packets), 0);
+            printf(COLOR_GREEN);
+            printf("Packet sent!\n");
+	    }
+
+        if (status == IMPOSSIBLE_CONNECTION) {
+            printf(COLOR_RED);
+            printf("Host is down.\n");
         }
     }
-
     return 0;
 }
